@@ -209,7 +209,6 @@
         }
 
         .nav-group.is-open .sub-node-wrapper { display: flex; }
-
         .sub-node { font-size: 7px; background: rgba(255, 255, 255, 0.02); }
         @media (min-width: 768px) { .sub-node { font-size: 0.65rem; } }
 
@@ -243,10 +242,7 @@
         }
 
         @media (min-width: 768px) {
-            .service-card {
-                border-radius: 0;
-                min-height: 400px;
-            }
+            .service-card { border-radius: 0; min-height: 400px; }
         }
 
         .service-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3) grayscale(0.2); transition: all 0.7s ease; z-index: 1; }
@@ -258,63 +254,47 @@
         .service-desc { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); letter-spacing: 0.12em; max-width: 90%; margin: 0 auto; line-height: 1.4; }
         @media (min-width: 768px) { .service-desc { font-size: 0.75rem; } }
 
+        /* --- MODERN ABOUT CARDS --- */
+        .intro-hero { margin-bottom: 80px; text-align: center; }
+        .about-grid { display: grid; grid-cols: 1; gap: 30px; }
+        @media (min-width: 768px) { .about-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; } }
+
+        .about-card-modern {
+            position: relative;
+            background: #0a0a0a;
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            transition: all 0.5s ease;
+        }
+
+        .about-card-modern:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); box-shadow: 0 40px 80px rgba(0,0,0,0.9); }
+        .about-card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35); transition: all 0.7s ease; z-index: 1; }
+        .about-card-modern:hover .about-card-img { filter: brightness(0.5); transform: scale(1.05); }
+        .about-card-body { position: relative; z-index: 10; }
+        .about-card-category { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4em; color: rgba(255,255,255,0.5); margin-bottom: 12px; display: block; }
+        .about-card-title { font-size: 1.6rem; font-weight: 900; text-transform: uppercase; color: #fff; margin-bottom: 24px; letter-spacing: -0.02em; line-height: 1.1; }
+        .about-card-list { space-y: 12px; }
+        .about-card-item { margin-bottom: 16px; border-left: 2px solid rgba(255,255,255,0.1); padding-left: 16px; }
+        .item-label { font-size: 0.75rem; font-weight: 800; color: #fff; text-transform: uppercase; display: block; margin-bottom: 4px; }
+        .item-desc { font-size: 0.7rem; color: rgba(255,255,255,0.5); font-weight: 500; line-height: 1.5; }
+
         /* --- VIDEO GRID --- */
-        .project-section { 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 24px 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.03); 
-            background: #000; 
-        }
-
-        @media (min-width: 768px) { 
-            .project-section { padding: 40px 0; } 
-        }
-
-        .video-thumbnail-link { 
-            position: relative; 
-            z-index: 10; 
-            width: 85%; 
-            max-width: 280px; 
-            aspect-ratio: 9/16; 
-            background: #111; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            transition: all 0.5s ease; 
-            border: 1px solid rgba(255,255,255,0.08); 
-        }
-
-        .video-thumbnail-link.landscape { 
-            aspect-ratio: 16/9; 
-            max-width: 90%; 
-        }
-
-        @media (min-width: 768px) {
-            .video-thumbnail-link.landscape {
-                max-width: 1000px; 
-            }
-        }
-
+        .project-section { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.03); background: #000; }
+        @media (min-width: 768px) { .project-section { padding: 40px 0; } }
+        .video-thumbnail-link { position: relative; z-index: 10; width: 85%; max-width: 280px; aspect-ratio: 9/16; background: #111; border-radius: 12px; overflow: hidden; transition: all 0.5s ease; border: 1px solid rgba(255,255,255,0.08); }
+        .video-thumbnail-link.landscape { aspect-ratio: 16/9; max-width: 90%; }
+        @media (min-width: 768px) { .video-thumbnail-link.landscape { max-width: 1000px; } }
         .video-thumbnail-link:hover { transform: translateY(-10px) scale(1.03); border-color: #fff; }
         .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: all 0.3s; }
         .video-thumbnail-link:hover .play-button-overlay { background: #fff; color: #000; }
         .hidden-node { display: none !important; }
-        
-        /* UPDATED WATCH LABEL FOR OVERLAY EFFECT */
-        .watch-label { 
-            position: absolute; 
-            bottom: 12px; 
-            left: 12px; 
-            font-size: 9px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            color: rgba(255, 255, 255, 0.5); 
-            letter-spacing: 0.1em;
-            z-index: 20;
-            pointer-events: none;
-        }
+        .watch-label { position: absolute; bottom: 12px; left: 12px; font-size: 9px; font-weight: 800; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); letter-spacing: 0.1em; z-index: 20; pointer-events: none; }
 
         /* --- SLIDER --- */
         .slider-container { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
@@ -338,6 +318,7 @@
 
     <div class="main-content-wrapper">
         
+        <!-- HOME SECTION -->
         <div id="home-section">
             <div class="slider-container">
                 <div class="slide active">
@@ -399,7 +380,7 @@
                     <div class="service-card" onclick="filterData('branding', null)">
                         <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Dịch Vụ Hình Ảnh" class="service-card-bg" loading="lazy">
                         <div class="service-content">
-                            <h4 class="service-title">DỊCH VỤ HÌNH ẢNH</h4>
+                            <h4 class="service-title">DỊCH VỤ HÌNH Ảnh</h4>
                             <p class="service-desc">CHỤP ẢNH PROFILE & THƯƠNG HIỆU CAO CẤP</p>
                         </div>
                     </div>
@@ -440,20 +421,101 @@
                     </div>
                 </div>
             </section>
-
-            <section class="pb-24 px-0 w-full flex justify-center">
-                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEigXBNMEAtQFt-igsG2fDucBqKQ9XLL8f6NoZakB4geiLXMTHizItHL50li9nYhOS8jKWDPx5BEYi7gI-yUSOX7hmKWbKKMWmMjSnpDIXGetreqTvaYP9pewVqt-sW_AxpnQuXXdn3APdTJHpOVyE55zYEqB9J4g7qyUGMbiep_UJsivue0_V9oETbKIwE0" alt="Đối tác của UP MEDIA" class="w-full h-auto object-contain opacity-90 hover:opacity-100 transition-opacity">
-            </section>
         </div>
 
+        <!-- ABOUT SECTION -->
+        <div id="about-section" class="content-section hidden py-32 px-6 max-w-7xl mx-auto">
+             <div class="intro-hero">
+                <h2 class="text-4xl md:text-8xl font-black italic uppercase tracking-tighter mb-6">UP MEDIA</h2>
+                <h3 class="text-xl md:text-3xl font-bold text-gray-500 uppercase tracking-widest mb-10 italic">NÂNG TẦM THƯƠNG HIỆU QUA TỪNG KHUNG HÌNH</h3>
+                <p class="text-gray-400 text-xs md:text-sm max-w-4xl mx-auto uppercase font-bold tracking-widest leading-loose">
+                    Tại UP MEDIA, chúng tôi không chỉ quay phim, chúng tôi kể câu chuyện của bạn bằng ngôn ngữ hình ảnh chuyên nghiệp và sáng tạo. Với sự thấu hiểu thị trường nội dung số, chúng tôi đồng hành cùng doanh nghiệp qua các dịch vụ trọng tâm.
+                </p>
+             </div>
+
+             <div class="about-grid">
+                <!-- Thẻ 1: VIDEO & TVC -->
+                <div class="about-card-modern group">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&w=1200&q=80" class="about-card-img">
+                    <div class="about-card-body">
+                        <span class="about-card-category">Creative Production</span>
+                        <h4 class="about-card-title">SẢN XUẤT VIDEO & TVC</h4>
+                        <div class="about-card-list">
+                            <div class="about-card-item">
+                                <span class="item-label">TVC Production</span>
+                                <p class="item-desc">Phim quảng cáo chuyên nghiệp đạt tiêu chuẩn truyền hình.</p>
+                            </div>
+                            <div class="about-card-item">
+                                <span class="item-label">Video Quảng Cáo</span>
+                                <p class="item-desc">Thúc đẩy doanh số hiệu quả với ý tưởng kịch bản đột phá.</p>
+                            </div>
+                            <div class="about-card-item">
+                                <span class="item-label">Video Sản Phẩm</span>
+                                <p class="item-desc">Tôn vinh chi tiết, làm nổi bật giá trị cốt lõi của sản phẩm.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thẻ 2: DIGITAL STRATEGY -->
+                <div class="about-card-modern group">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&w=1200&q=80" class="about-card-img">
+                    <div class="about-card-body">
+                        <span class="about-card-category">Digital & Social</span>
+                        <h4 class="about-card-title">CHIẾN LƯỢC NỘI DUNG SỐ</h4>
+                        <div class="about-card-list">
+                            <div class="about-card-item">
+                                <span class="item-label">Xây Dựng Kênh</span>
+                                <p class="item-desc">Tư vấn chiến lược Social Media đa nền tảng (TikTok, Reels, Youtube).</p>
+                            </div>
+                            <div class="about-card-item">
+                                <span class="item-label">Booking Talent</span>
+                                <p class="item-desc">Kết nối mạng lưới KOL, KOC, Model, MC phù hợp nhất với thương hiệu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thẻ 3: EVENTS & IMAGE -->
+                <div class="about-card-modern group">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&w=1200&q=80" class="about-card-img">
+                    <div class="about-card-body">
+                        <span class="about-card-category">Visual Identity</span>
+                        <h4 class="about-card-title">SỰ KIỆN & HÌNH ẢNH</h4>
+                        <div class="about-card-list">
+                            <div class="about-card-item">
+                                <span class="item-label">Event Production</span>
+                                <p class="item-desc">Lưu giữ trọn vẹn cảm xúc và những khoảnh khắc quan trọng của sự kiện.</p>
+                            </div>
+                            <div class="about-card-item">
+                                <span class="item-label">Dịch Vụ Hình Ảnh</span>
+                                <p class="item-desc">Chụp ảnh Profile cá nhân và bộ nhận diện thương hiệu cao cấp.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thẻ 4: TRAINING -->
+                <div class="about-card-modern group">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb28f74b0cd?auto=format&w=1200&q=80" class="about-card-img">
+                    <div class="about-card-body">
+                        <span class="about-card-category">Human Development</span>
+                        <h4 class="about-card-title">ĐÀO TẠO & PHÁT TRIỂN</h4>
+                        <div class="about-card-list">
+                            <div class="about-card-item">
+                                <span class="item-label">In-house Team Training</span>
+                                <p class="item-desc">Đào tạo và nâng cấp kỹ năng chuyên môn cho đội ngũ nội bộ của doanh nghiệp.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+
+        <!-- OTHER SECTIONS (PRODUCT HUB, CONTACT, PORTFOLIO) -->
         <div id="product-hub-section" class="content-section hidden py-12 px-6 max-w-7xl mx-auto">
             <h2 class="text-3xl font-black italic mb-10 uppercase tracking-tighter">Hệ sinh thái sản phẩm</h2>
             <div id="hub-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
-
-        <div id="about-section" class="content-section hidden py-24 px-6 max-w-4xl mx-auto text-center">
-             <h2 class="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-8">Về UP MEDIA</h2>
-             <p class="text-gray-400 text-sm md:text-lg leading-relaxed">Chúng tôi cung cấp giải pháp truyền thông hình ảnh toàn diện cho doanh nghiệp.</p>
         </div>
 
         <div id="contact-section" class="content-section hidden py-24 px-6 max-w-4xl mx-auto text-center">
@@ -576,17 +638,23 @@
             <section class="project-section md:col-span-3" data-cat="construction"><a href="https://drive.google.com/file/d/1683QAwdxTsCZG_Dv1kLyfTLo42HwTxJQ/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1683QAwdxTsCZG_Dv1kLyfTLo42HwTxJQ&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 06</div></a></section>
             <section class="project-section md:col-span-3" data-cat="construction"><a href="https://www.youtube.com/watch?v=VTJ4ivnniFk" target="_blank" class="video-thumbnail-link landscape"><img src="https://img.youtube.com/vi/VTJ4ivnniFk/maxresdefault.jpg" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 07</div></a></section>
 
-            <!-- QUẢNG CÁO (10 VIDEOS) -->
+            <!-- QUẢNG CÁO (UPDATED LINKS) -->
             <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1fLV9HGaXxleyWlnRze_LbZbK6778N9_7/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1fLV9HGaXxleyWlnRze_LbZbK6778N9_7&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 01</div></a></section>
             <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1LqNhrMre8_dcjcBzIgz7iF13vimwNFWh/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1LqNhrMre8_dcjcBzIgz7iF13vimwNFWh&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 02</div></a></section>
             <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1gwW7ZUSjzRKBIGbn9NXv46J7s67246-u/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1gwW7ZUSjzRKBIGbn9NXv46J7s67246-u&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 03</div></a></section>
             <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1oGQ2VKodZhGr0IFyGKrdToJmU71SwsEr/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1oGQ2VKodZhGr0IFyGKrdToJmU71SwsEr&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 04</div></a></section>
             <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1ZOc0gpO7_Hl3zCGtvVB7JdB7g96tEyYf/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1ZOc0gpO7_Hl3zCGtvVB7JdB7g96tEyYf&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 05</div></a></section>
             <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/15uDMKw29JPaHJwq1qKdfiaI4vKMvzuWl/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=15uDMKw29JPaHJwq1qKdfiaI4vKMvzuWl&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 06</div></a></section>
-            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1h_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1h_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 07</div></a></section>
-            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1H-Z1_-K_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1H-Z1_-K_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 08</div></a></section>
-            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1K_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1K_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 09</div></a></section>
-            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1L_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1L_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 10</div></a></section>
+            <!-- UPDATED 07 -->
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1W1hqfELmCHZK86ut5P83ZtsH8UF-13Ql/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1W1hqfELmCHZK86ut5P83ZtsH8UF-13Ql&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 07</div></a></section>
+            <!-- UPDATED 08 -->
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1odkCBen0xmsvlmlXCZqTalWF7t-vmw5K/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1odkCBen0xmsvlmlXCZqTalWF7t-vmw5K&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 08</div></a></section>
+            <!-- UPDATED 09 -->
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1ZN7fjnMsYrxX-8l9pK-FexI2Y_FCN4nb/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1ZN7fjnMsYrxX-8l9pK-FexI2Y_FCN4nb&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 09</div></a></section>
+            <!-- UPDATED 10 -->
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1gWeDSdI6fWH0WLbZLiaQCO9WDxBGqrg9/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1gWeDSdI6fWH0WLbZLiaQCO9WDxBGqrg9&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 10</div></a></section>
+            <!-- ADDED 11 -->
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/14QuD1zxAymUXPW_OEPGQtJOo_m5N4UdW/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=14QuD1zxAymUXPW_OEPGQtJOo_m5N4UdW&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 11</div></a></section>
 
             <!-- PHIM TVC (3 VIDEOS) -->
             <section class="project-section md:col-span-3" data-cat="tvc"><a href="https://drive.google.com/file/d/1fuuesV4h6eqDrWxES-Xq8qsD2KJPyJ7y/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1fuuesV4h6eqDrWxES-Xq8qsD2KJPyJ7y&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">PHIM TVC 01</div></a></section>
