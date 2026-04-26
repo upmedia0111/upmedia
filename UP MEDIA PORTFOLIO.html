@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UP MEDIA | PREMIUM VISUAL SOLUTIONS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,400;0,600;0,800;1,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --accent-color: #ffffff;
+            --text-dim: #888888;
+            --sidebar-width: 95px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER & TAGLINE --- */
+        .header-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1200;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (min-width: 768px) {
+            .header-wrapper { padding: 20px 40px; }
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            width: 100%;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 18px;
+            object-fit: contain;
+            filter: brightness(1.2);
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .logo-img { height: 45px; }
+            .brand-row { gap: 25px; }
+        }
+
+        .tagline-text {
+            white-space: nowrap;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #999;
+            line-height: 1;
+            font-size: clamp(9px, 3.2vw, 42px); 
+            letter-spacing: 0.01em;
+        }
+
+        @media (min-width: 768px) {
+            .tagline-text { letter-spacing: 0.1em; }
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-container {
+            position: fixed;
+            left: 0;
+            top: 45px;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, transparent 100%);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 20px 8px;
+            z-index: 1100;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-container::-webkit-scrollbar { display: none; }
+
+        @media (min-width: 768px) {
+            .nav-container {
+                position: relative;
+                top: 0;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                background: transparent;
+                backdrop-filter: none;
+                padding: 15px 0 0 0;
+                overflow-y: visible;
+                height: auto;
+                flex-wrap: wrap;
+            }
+        }
+
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .nav-group {
+                width: auto;
+                align-items: center;
+                margin: 0 6px;
+                padding-bottom: 20px;
+                margin-bottom: -20px;
+            }
+        }
+
+        .data-node {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 6px;
+            border-radius: 6px;
+            font-size: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-dim);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-align: center;
+            line-height: 1;
+            white-space: nowrap; 
+            overflow: visible; 
+            flex-shrink: 0;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (min-width: 768px) {
+            .data-node {
+                width: auto;
+                padding: 8px 22px;
+                font-size: 0.65rem;
+                border-radius: 30px;
+                letter-spacing: 1.5px;
+            }
+        }
+
+        .data-node:hover, .data-node.active {
+            background: var(--accent-color);
+            color: #000;
+            border-color: white;
+            transform: translateY(-4px);
+        }
+
+        /* --- SUB MENU LOGIC --- */
+        .sub-node-wrapper {
+            display: none; 
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            padding-left: 12px;
+            margin-top: 4px;
+        }
+
+        @media (min-width: 768px) {
+            .sub-node-wrapper {
+                display: flex;
+                position: absolute;
+                top: 45px;
+                left: 50%;
+                transform: translateX(-50%) translateY(10px);
+                width: 220px;
+                padding-left: 0;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 20px;
+                padding: 15px;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: opacity 0.3s ease 0.5s, visibility 0.3s ease 0.5s, transform 0.3s ease 0.5s;
+                z-index: 100;
+            }
+
+            .nav-group:hover .sub-node-wrapper {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateX(-50%) translateY(0);
+                transition: opacity 0.3s ease 0s, visibility 0.3s ease 0s, transform 0.3s ease 0s;
+            }
+        }
+
+        .nav-group.is-open .sub-node-wrapper { display: flex; }
+
+        .sub-node { font-size: 7px; background: rgba(255, 255, 255, 0.02); }
+        @media (min-width: 768px) { .sub-node { font-size: 0.65rem; } }
+
+        /* --- MAIN CONTENT --- */
+        .main-content-wrapper {
+            margin-top: 45px;
+            transition: all 0.5s ease;
+        }
+
+        @media (min-width: 768px) {
+            .main-content-wrapper { margin-top: 140px; }
+        }
+
+        /* --- SERVICE CARDS --- */
+        .service-card {
+            position: relative;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0;
+            padding: 30px 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            min-height: 250px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .service-card {
+                border-radius: 0;
+                min-height: 400px;
+            }
+        }
+
+        .service-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3) grayscale(0.2); transition: all 0.7s ease; z-index: 1; }
+        .service-card:hover { transform: scale(1.02) translateY(-8px); border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+        .service-card:hover .service-card-bg { filter: brightness(0.5) grayscale(0); transform: scale(1.1); }
+        .service-content { position: relative; z-index: 10; width: 100%; }
+        .service-title { font-size: 1.1rem; font-weight: 900; text-transform: uppercase; color: #fff; margin-bottom: 12px; letter-spacing: 0.05em; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        @media (min-width: 768px) { .service-title { font-size: 1.4rem; } }
+        .service-desc { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); letter-spacing: 0.12em; max-width: 90%; margin: 0 auto; line-height: 1.4; }
+        @media (min-width: 768px) { .service-desc { font-size: 0.75rem; } }
+
+        /* --- VIDEO GRID --- */
+        .project-section { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 24px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.03); 
+            background: #000; 
+        }
+
+        @media (min-width: 768px) { 
+            .project-section { padding: 40px 0; } 
+        }
+
+        .video-thumbnail-link { 
+            position: relative; 
+            z-index: 10; 
+            width: 85%; 
+            max-width: 280px; 
+            aspect-ratio: 9/16; 
+            background: #111; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            transition: all 0.5s ease; 
+            border: 1px solid rgba(255,255,255,0.08); 
+        }
+
+        .video-thumbnail-link.landscape { 
+            aspect-ratio: 16/9; 
+            max-width: 90%; 
+        }
+
+        @media (min-width: 768px) {
+            .video-thumbnail-link.landscape {
+                max-width: 1000px; 
+            }
+        }
+
+        .video-thumbnail-link:hover { transform: translateY(-10px) scale(1.03); border-color: #fff; }
+        .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: all 0.3s; }
+        .video-thumbnail-link:hover .play-button-overlay { background: #fff; color: #000; }
+        .hidden-node { display: none !important; }
+        
+        /* UPDATED WATCH LABEL FOR OVERLAY EFFECT */
+        .watch-label { 
+            position: absolute; 
+            bottom: 12px; 
+            left: 12px; 
+            font-size: 9px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: rgba(255, 255, 255, 0.5); 
+            letter-spacing: 0.1em;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        /* --- SLIDER --- */
+        .slider-container { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+        @media (min-width: 768px) { .slider-container { border-radius: 0 0 60px 60px; } }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out; }
+        .slide.active { opacity: 1; }
+        .slide-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(40%); }
+    </style>
+</head>
+<body>
+
+    <header class="header-wrapper">
+        <div class="brand-row">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDNr_Np7CsVvNdPQdul6r2uMIkrnZ-JkdWsoxeT8i-iui5s7aesfaSl4dIzeXhBXOV032CS6MfCNaUC_rNNSKPkzOvnOu6E5VxwkQOGHAjNPcDTUYv-bSj0wQpVlKT4Q8XjMGhjiNuiBsYPMf21lhwbn1SmBdOIxkzXYrbgdpTLVnrqlc2JLBbdwF7gqFT/s320/media.png" alt="UP MEDIA" class="logo-img">
+            <div class="tagline-text">ADVERTISING COMMUNICATIONS AND EVENTS</div>
+        </div>
+        <nav id="desktop-nav" class="nav-container hidden md:flex"></nav>
+    </header>
+
+    <nav id="mobile-sidebar" class="nav-container flex md:hidden"></nav>
+
+    <div class="main-content-wrapper">
+        
+        <div id="home-section">
+            <div class="slider-container">
+                <div class="slide active">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgkBOfnYFl-bkdsVAgF9m5fbSF2D48zhK_r30D9HFeH0vsoedWBNkO9sfow4ifcfzN3r5mFp3sHeqS4bochhaEX7fVpKj_r1Umyz_byoU6muOdqvqAt1zHkpltmCUCQED0k3DYHsAB_G8N2Y7rHRxi6-uI2BcgJzUNJqc4TqyDvtxeBybFfB2PVT5nVn7ih/s320/product1.png" class="slide-img">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                        <h2 class="text-5xl md:text-8xl font-extrabold italic tracking-tighter mb-4 uppercase">Products</h2>
+                        <p class="text-xs md:text-sm text-white/60 font-bold uppercase tracking-[0.8em]">Commercial Video Production</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHdUt7UHypGPkgyXSgqcnHFFDPSltTAlPEzl6ypLf3y0qzdiJRpseodmjs-w8U0IOD-uDEbyqIinVYm0R3VAV0kASPNJdkKnJURAv7Fh73beH5rtTgAbLMlNw4WBm_ed2405iZ-iLhpBZstzCd8gQDUEE37OM-I8YL98NoEeyRhVW8NT_nrIVTpHjjMsJ7/s320/event2.png" class="slide-img">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                        <h2 class="text-5xl md:text-8xl font-extrabold italic tracking-tighter mb-4 uppercase">Event</h2>
+                        <p class="text-xs md:text-sm text-white/60 font-bold uppercase tracking-[0.8em]">Capturing Moments</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjkdd1mutNoRrwLsuvJK3k9mU3ImMJq-0lZi656PbmwWcOcx1H2Xn1vlJdTkKr-HQ7UZtA_KRg318x70Zqkgj7JXhkpoeuoq3YJCfwv5rVEStoclZxvsFBl4bi338QoiFkeCx7BGBXKyoNQ479d0R3GOzoWH1ZV8MuuCYTtLQD1qRzPycrH7sMK88cOg43I/s320/event1.png" class="slide-img">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                        <h2 class="text-5xl md:text-8xl font-extrabold italic tracking-tighter mb-4 uppercase">Follow KOL</h2>
+                        <p class="text-xs md:text-sm text-white/60 font-bold uppercase tracking-[0.8em]">Influence & Branding</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="py-24 w-full">
+                <div class="max-w-7xl mx-auto px-6 text-center mb-16">
+                    <h3 class="text-4xl md:text-7xl font-extrabold tracking-tighter mb-4 uppercase italic leading-tight">
+                        GIẢI PHÁP VISUAL MARKETING<br>
+                        <span class="text-[#3D424B]">TOÀN DIỆN CHUYÊN SÂU</span>
+                    </h3>
+                    <p class="text-[10px] md:text-[12px] text-gray-500 font-bold uppercase tracking-[0.3em] max-w-2xl mx-auto leading-relaxed">
+                        CHÚNG TÔI KIẾN TẠO GIÁ TRỊ THƯƠNG HIỆU THÔNG QUA HÌNH ẢNH VÀ CHIẾN LƯỢC NỘI DUNG ĐA NỀN TẢNG
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-0 w-full px-0">
+                    <div class="service-card" onclick="filterData('ads', null)">
+                        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Video Quảng Cáo" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">VIDEO QUẢNG CÁO</h4>
+                            <p class="service-desc">THÚC ĐẨY DOANH SỐ BẰNG HÌNH ẢNH SÁNG TẠO</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('oneshot', null)">
+                        <img src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Xây Dựng Kênh" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">XÂY DỰNG KÊNH</h4>
+                            <p class="service-desc">CHIẾN LƯỢC SOCIAL MEDIA ĐA NỀN TẢNG</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('event', null)">
+                        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Event Production" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">EVENT PRODUCTION</h4>
+                            <p class="service-desc">LƯU GIỮ TRỌN VẸN CẢM XÚC SỰ KIỆN</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('branding', null)">
+                        <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Dịch Vụ Hình Ảnh" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">DỊCH VỤ HÌNH ẢNH</h4>
+                            <p class="service-desc">CHỤP ẢNH PROFILE & THƯƠNG HIỆU CAO CẤP</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('spa', null)">
+                        <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Video Sản Phẩm" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">VIDEO SẢN PHẨM</h4>
+                            <p class="service-desc">TÔN VINH CHI TIẾT VÀ GIÁ TRỊ CỐT LÕI</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('contact', null)">
+                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Booking Talent" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">BOOKING TALENT</h4>
+                            <p class="service-desc">KOL, KOC, MODEL, MC CHUYÊN NGHIỆP</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('contact', null)">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Team Training" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">IN-HOUSE TEAM TRAINING</h4>
+                            <p class="service-desc">PROFESSIONAL SKILL UPGRADING</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('tvc', null)">
+                        <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="TVC Production" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">TVC PRODUCTION</h4>
+                            <p class="service-desc">PHIM QUẢNG CÁO CHUẨN TRUYỀN HÌNH</p>
+                        </div>
+                    </div>
+                    <div class="service-card" onclick="filterData('contact', null)">
+                        <img src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=60&w=1200&fm=webp" alt="Set up Livestream" class="service-card-bg" loading="lazy">
+                        <div class="service-content">
+                            <h4 class="service-title">SET UP LIVESTREAM</h4>
+                            <p class="service-desc">GIẢI PHÁP PHÁT SÓNG TRỰC TIẾP CHUYÊN NGHIỆP</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pb-24 px-0 w-full flex justify-center">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEigXBNMEAtQFt-igsG2fDucBqKQ9XLL8f6NoZakB4geiLXMTHizItHL50li9nYhOS8jKWDPx5BEYi7gI-yUSOX7hmKWbKKMWmMjSnpDIXGetreqTvaYP9pewVqt-sW_AxpnQuXXdn3APdTJHpOVyE55zYEqB9J4g7qyUGMbiep_UJsivue0_V9oETbKIwE0" alt="Đối tác của UP MEDIA" class="w-full h-auto object-contain opacity-90 hover:opacity-100 transition-opacity">
+            </section>
+        </div>
+
+        <div id="product-hub-section" class="content-section hidden py-12 px-6 max-w-7xl mx-auto">
+            <h2 class="text-3xl font-black italic mb-10 uppercase tracking-tighter">Hệ sinh thái sản phẩm</h2>
+            <div id="hub-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+
+        <div id="about-section" class="content-section hidden py-24 px-6 max-w-4xl mx-auto text-center">
+             <h2 class="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-8">Về UP MEDIA</h2>
+             <p class="text-gray-400 text-sm md:text-lg leading-relaxed">Chúng tôi cung cấp giải pháp truyền thông hình ảnh toàn diện cho doanh nghiệp.</p>
+        </div>
+
+        <div id="contact-section" class="content-section hidden py-24 px-6 max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-12">Liên hệ</h2>
+            <div class="flex flex-col items-center gap-10">
+                <a href="https://zalo.me/0888484050" target="_blank" class="group flex items-center gap-5 text-2xl md:text-4xl font-bold hover:text-blue-400 transition-all duration-300">
+                    <div class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center overflow-hidden rounded-xl group-hover:scale-110 transition-transform bg-white">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEj-D4rZ8p00hKhHLhU8enbCObs48Qwel8-9wnSCEItAGp4Cs33h4e60zf8iyJDtKq7OH89sSzhNL0RokCvL5p7zcZ3NzUiXmaCkd8AgQQZHxGCc85w53jDz-iLLpNxqyKzeE_NQCGygN5ekVEwsY1m7xRnG_hk2aM4q9FvyThMEpsdPp-h0dXu13hXkmBqJ" alt="Zalo Logo" class="w-full h-full object-cover">
+                    </div>
+                    0888 484 050
+                </a>
+                <a href="https://www.facebook.com/upmediahcm" target="_blank" class="group flex items-center gap-5 text-2xl md:text-4xl font-bold hover:text-blue-600 transition-all duration-300">
+                    <div class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center overflow-hidden rounded-xl group-hover:scale-110 transition-transform bg-white">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEju-wOhYHsRHoo3v-uKcT2ESxm9zSVcMMccqqX2sSAWTCtNxbVGBSU6pulm2uLi60qhyS3Of8G0Ey_WG97UTwoYr4n-WBWMp0L3UyxpCSa-obNK11nYuECq-BXWNFn7t9MaBV_YwicFEB3sJIjMR7l-7PTiQ1zS1AlB_eNs0gUsWMZtkuoFxfDyTutwtUNf" alt="Facebook Logo" class="w-full h-full object-cover">
+                    </div>
+                    UP MEDIA
+                </a>
+            </div>
+        </div>
+
+        <main id="portfolio-main" class="grid grid-cols-1 md:grid-cols-3 hidden">
+            <!-- SPA BEAUTY (22 VIDEOS) -->
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/10mdovdpHMZD0ck1RAk3rgq5dpWSoldeF/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=10mdovdpHMZD0ck1RAk3rgq5dpWSoldeF&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 01</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1TJO6onGd7K3rZ0cbsblHtiiu24EubZzo/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1TJO6onGd7K3rZ0cbsblHtiiu24EubZzo&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 02</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1wrHBwVF4_QdGPV2O_7TvMohTiNduqwoU/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1wrHBwVF4_QdGPV2O_7TvMohTiNduqwoU&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 03</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1uY57ZQ_mKRRwWLbcsQbLjX8kXyHXKdov/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1uY57ZQ_mKRRwWLbcsQbLjX8kXyHXKdov&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 04</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1ctn8F0vm9T5ULjAiVL9-AjGdQePbzTng/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1ctn8F0vm9T5ULjAiVL9-AjGdQePbzTng&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 05</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1qqO_3DGslgFH1DbcIpSvlzQuUSzcyNgB/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1qqO_3DGslgFH1DbcIpSvlzQuUSzcyNgB&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 06</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1o_5H7-CB7DSk53V-daJvv8zbqSeRS6zw/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1o_5H7-CB7DSk53V-daJvv8zbqSeRS6zw&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 07</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1fMVPw-pctkDU8qVzMyvhRxxYQaBAliFT/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1fMVPw-pctkDU8qVzMyvhRxxYQaBAliFT&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 08</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/14QuD1zxAymUXPW_OEPGQtJOo_m5N4UdW/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=14QuD1zxAymUXPW_OEPGQtJOo_m5N4UdW&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 09</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1tZrYHBgCG8_8v07AaKCj0Kh74bMzwjNa/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1tZrYHBgCG8_8v07AaKCj0Kh74bMzwjNa&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 10</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1W4Dlki0Dne3rbny-vyD9FAXrt1D3GzrZ/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1W4Dlki0Dne3rbny-vyD9FAXrt1D3GzrZ&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 11</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1vI-lAXj633rF5-GW2vsr_KFqx4TW3ns-" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1vI-lAXj633rF5-GW2vsr_KFqx4TW3ns-&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 12</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1tcuAYP04Z4-ZEYRi8nd24c0BytMos_Kz/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1tcuAYP04Z4-ZEYRi8nd24c0BytMos_Kz&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 13</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1U236QRDrKIKaRwvLI-IwSjPP9sCBalzX/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1U236QRDrKIKaRwvLI-IwSjPP9sCBalzX&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 14</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1QuR2h4pKiHhcYjH-z8BI3D0XMFGJGGeS/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1QuR2h4pKiHhcYjH-z8BI3D0XMFGJGGeS&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 15</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1_4gT6GAvdbpo-VuheOobGMS2y8KYt1ZL/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1_4gT6GAvdbpo-VuheOobGMS2y8KYt1ZL&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 16</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1_KbXtRxcCjEnVroAjFnhd2A5PzPZzP73/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1_KbXtRxcCjEnVroAjFnhd2A5PzPZzP73&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 17</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/19DIF_HvYgxNANLOTlNoqufCI2y7S4vUP/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=19DIF_HvYgxNANLOTlNoqufCI2y7S4vUP&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 18</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1JkryzxftFPDQSIsa7Q7FODgf8WfqJSjB/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1JkryzxftFPDQSIsa7Q7FODgf8WfqJSjB&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 19</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1EO7YnYIdZ_J4xOhUpQKAYH6uvqFqIW39/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1EO7YnYIdZ_J4xOhUpQKAYH6uvqFqIW39&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 20</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/1gWeDSdI6fWH0WLbZLiaQCO9WDxBGqrg9/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1gWeDSdI6fWH0WLbZLiaQCO9WDxBGqrg9&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 21</div></a></section>
+            <section class="project-section" data-cat="spa"><a href="https://drive.google.com/file/d/13UMj69CfzVScMgXk5MFFkyowyW3-9hE9/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=13UMj69CfzVScMgXk5MFFkyowyW3-9hE9&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SPA BEAUTY 22</div></a></section>
+
+            <!-- BẤT ĐỘNG SẢN (18 VIDEOS) -->
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1Cq8_ikg4-i7h62QqGEo2xZJR9ZqwvfPE/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1Cq8_ikg4-i7h62QqGEo2xZJR9ZqwvfPE&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 01</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1VNYqbOj5t3POxRwS8YJhfqOut9FcYHjK/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1VNYqbOj5t3POxRwS8YJhfqOut9FcYHjK&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 02</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1Ywtnm49MiL54uMJOgUYhEmsLNe8UYIaa/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1Ywtnm49MiL54uMJOgUYhEmsLNe8UYIaa&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 03</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/19RdErbIMtQTOi6VStIcuOhkE4tsVeX0F/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=19RdErbIMtQTOi6VStIcuOhkE4tsVeX0F&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 04</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1qTK9U3qx1256RO2OaxSSDv3MiKTWiLMJ/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1qTK9U3qx1256RO2OaxSSDv3MiKTWiLMJ&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 05</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1AX8FzeUPLXVDnKEfUIFL6sZvXGtwAZ1A/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1AX8FzeUPLXVDnKEfUIFL6sZvXGtwAZ1A&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 06</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1Zo8EYGyYjLLgu9AxxD9PM-E7OOI7o-t7/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1Zo8EYGyYjLLgu9AxxD9PM-E7OOI7o-t7&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 07</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/148D7BrZOqmmaxa8G9sqCuR2nrA2hHuJ1/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=148D7BrZOqmmaxa8G9sqCuR2nrA2hHuJ1&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 08</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1d6j81NFqyRrG0GkyeEQoV3qrsWGNh99s/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1d6j81NFqyRrG0GkyeEQoV3qrsWGNh99s&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 09</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1MCV1G2zq93p7BB7DiTrd4RxiMwurhIFY/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1MCV1G2zq93p7BB7DiTrd4RxiMwurhIFY&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 10</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1y16LVAnXXVKG1hF3gyCvSw5JR7tN4UR9/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1y16LVAnXXVKG1hF3gyCvSw5JR7tN4UR9&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 11</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1qazoiWoR-9fRKbIjI5K2uMVfpvH7waFE/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1qazoiWoR-9fRKbIjI5K2uMVfpvH7waFE&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 12</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1FtzMmx8LlmUsF8jON7Ri1JTkKMNzHYgh/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1FtzMmx8LlmUsF8jON7Ri1JTkKMNzHYgh&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 13</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1BFvAqoeBZ-MFxgU8a1LhP1m48CZa5IGz/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1BFvAqoeBZ-MFxgU8a1LhP1m48CZa5IGz&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 14</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1up0-87DXvkn5bKex4kj3rSGMWYkliE2r/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1up0-87DXvkn5bKex4kj3rSGMWYkliE2r&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 15</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/136TyrcacPkiDJ5z6xvbrJ6Z0oGRwbkP_" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=136TyrcacPkiDJ5z6xvbrJ6Z0oGRwbkP_&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 16</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1Gtw0UHPBUmvMf3EbI3v5YPNNWNBN0EFn/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1Gtw0UHPBUmvMf3EbI3v5YPNNWNBN0EFn&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 17</div></a></section>
+            <section class="project-section" data-cat="realestate"><a href="https://drive.google.com/file/d/1pmOxUCxpvNmdG0YdAGjRqG9vbZ15Tkrq/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1pmOxUCxpvNmdG0YdAGjRqG9vbZ15Tkrq&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BẤT ĐỘNG SẢN 18</div></a></section>
+
+            <!-- TỔNG HỢP (ONE-SHOT) (34 VIDEOS) -->
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1W1hqfELmCHZK86ut5P83ZtsH8UF-13Ql/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1W1hqfELmCHZK86ut5P83ZtsH8UF-13Ql&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 01</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1odkCBen0xmsvlmlXCZqTalWF7t-vmw5K/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1odkCBen0xmsvlmlXCZqTalWF7t-vmw5K&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 02</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1G2oMD-ZdsdbQ_fLbAADLz7JR_x5JBIE4/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1G2oMD-ZdsdbQ_fLbAADLz7JR_x5JBIE4&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 03</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1ZN7fjnMsYrxX-8l9pK-FexI2Y_FCN4nb/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1ZN7fjnMsYrxX-8l9pK-FexI2Y_FCN4nb&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 04</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1oZbUkYBO6jt_HPkgagHZMfy5IpW1GiRm/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1oZbUkYBO6jt_HPkgagHZMfy5IpW1GiRm&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 05</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1cnsM4vt5NrL0vx03pI6xbU8SPAPcuZAp/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1cnsM4vt5NrL0vx03pI6xbU8SPAPcuZAp&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 06</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/128duG1b-yqzgA6PXRQdoWjC1XV_PbySd/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=128duG1b-yqzgA6PXRQdoWjC1XV_PbySd&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 07</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/10NEfOcWngEwbBwV9tE06Feur8zxcWIxP/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=10NEfOcWngEwbBwV9tE06Feur8zxcWIxP&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 08</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1AYXDhFrswKdtddgdBod5TRgvP6uRiLia/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1AYXDhFrswKdtddgdBod5TRgvP6uRiLia&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 09</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1C4lq-723Ca_Qy4qcZ8ne0UvpVX5pk7CX/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1C4lq-723Ca_Qy4qcZ8ne0UvpVX5pk7CX&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 10</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1fx-dIqq8Bbl0c0Yr4arkocZ1D5V82cmp/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1fx-dIqq8Bbl0c0Yr4arkocZ1D5V82cmp&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 11</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1x-uORpdTDWvnlFPfMslxd2xJ9pum8HnZ/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1x-uORpdTDWvnlFPfMslxd2xJ9pum8HnZ&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 12</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1TYGkFp5xTaaTf3cIXBiWY7D0nUMHx2QI/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1TYGkFp5xTaaTf3cIXBiWY7D0nUMHx2QI&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 13</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1MLV2amOHFsqCFWy8YklnuSOB7ENhiPAW/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1MLV2amOHFsqCFWy8YklnuSOB7ENhiPAW&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 14</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1bHmoTud83w-wsbVaQfXTbwlEfOMwhnwq/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1bHmoTud83w-wsbVaQfXTbwlEfOMwhnwq&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 15</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/15sFpUFfBr7QiS1388Nu1RJ6qX2g4RAV8/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=15sFpUFfBr7QiS1388Nu1RJ6qX2g4RAV8&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 16</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1KE4_B1MjFvbkmthTCsNOYKJM5fRj4o8q/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1KE4_B1MjFvbkmthTCsNOYKJM5fRj4o8q&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 17</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1DYgHQYXeJ3tLgzvMeoXWQ5mHIJKg4bAo/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1DYgHQYXeJ3tLgzvMeoXWQ5mHIJKg4bAo&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 18</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1hxxUbda6g_MeQJF6KCf65mEA_Uk5fyvE/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1hxxUbda6g_MeQJF6KCf65mEA_Uk5fyvE&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 19</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1LsLwHD-dqzIOYOSGn49NTEXwb2-zIq6j/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1LsLwHD-dqzIOYOSGn49NTEXwb2-zIq6j&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 20</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1zB44lIqlFr7igg5r_SlT3ztnILDl3XLF/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1zB44lIqlFr7igg5r_SlT3ztnILDl3XLF&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 21</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1phLOWI2YYvxbySbFiRsFPblKYKc4aV1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1phLOWI2YYvxbySbFiRsFPblKYKc4aV1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 22</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1h5OtG4fhp8279uKXZbNp4XUJvlozBOUi/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1h5OtG4fhp8279uKXZbNp4XUJvlozBOUi&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 23</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/17xchQ8FhgF_CwiD2BiXVVgMvMPLwNo4a/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=17xchQ8FhgF_CwiD2BiXVVgMvMPLwNo4a&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 24</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/16pdZ6fLQYuOeQIiyftIU_BU3Z5-2pixR/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=16pdZ6fLQYuOeQIiyftIU_BU3Z5-2pixR&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 25</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1Dcb3kDH24tBEdWTGGBm2l91i8ibNK0i2/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1Dcb3kDH24tBEdWTGGBm2l91i8ibNK0i2&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 26</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1Q8RnEDF3p6p_1WWGWbK-virvaBkwOc79/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1Q8RnEDF3p6p_1WWGWbK-virvaBkwOc79&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 27</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1MH-UPkBG8dZ1DYXwnD3MOo73i3GCaMlo/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1MH-UPkBG8dZ1DYXwnD3MOo73i3GCaMlo&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 28</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1qnCnKeLCfu6EHkH3QQCKrNrjYcMnLdcj/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1qnCnKeLCfu6EHkH3QQCKrNrjYcMnLdcj&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 29</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1fptXe4C_QJCm7cU4ALdmiSXnqet4c8y7/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1fptXe4C_QJCm7cU4ALdmiSXnqet4c8y7&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 30</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1x7cOnIRJes8SYlMOKHtNNpnJAOdoFi-8/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1x7cOnIRJes8SYlMOKHtNNpnJAOdoFi-8&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 31</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/17O8Tug2kBTq1IDbAXQdruSi0scp5c7D_/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=17O8Tug2kBTq1IDbAXQdruSi0scp5c7D_&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 32</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/1WJSVQu2QowBgQC3fWcvrQlLdT2VOYvVD/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1WJSVQu2QowBgQC3fWcvrQlLdT2VOYvVD&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 33</div></a></section>
+            <section class="project-section" data-cat="oneshot"><a href="https://drive.google.com/file/d/17YQ1jDH2kg0tyjWCRHzmBl0hoYVn1m7V/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=17YQ1jDH2kg0tyjWCRHzmBl0hoYVn1m7V&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">TỔNG HỢP 34</div></a></section>
+
+            <!-- SỰ KIỆN (10 VIDEOS) -->
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1dOB-Ptx7NLkr0Us-MBUsP2U_nKL0ABZ8/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1dOB-Ptx7NLkr0Us-MBUsP2U_nKL0ABZ8&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 01</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1cwhGhKOLIKIqCPDRZoiBElDfLXvVG1RA/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1cwhGhKOLIKIqCPDRZoiBElDfLXvVG1RA&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 02</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/13tmVeeI50xAF6fglEsJufFw3fpwByT_A/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=13tmVeeI50xAF6fglEsJufFw3fpwByT_A&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 03</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/15lG2vzEUIdKnBvc7MLLn03zmYmohTNmE/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=15lG2vzEUIdKnBvc7MLLn03zmYmohTNmE&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 04</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1u5xDW4oL2F_Aw7RvlBtPzunvv7szg-bn/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1u5xDW4oL2F_Aw7RvlBtPzunvv7szg-bn&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 05</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1KhEQ_DyaLxMw4Xs1XJ0QSQZkDn8DS0Xo/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1KhEQ_DyaLxMw4Xs1XJ0&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 06</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1rtNIDyTi-5Nt1pFpViegRd3bSsVoj4Jj/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1rtNIDyTi-5Nt1pFpViegRd3bSsVoj4Jj&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 07</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1nQmeMXUPl3KEGiFEFHoZfq1XlHpPVs9v/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1nQmeMXUPl3KEGiFEFHoZfq1XlHpPVs9v&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 08</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1lPwvrYDdVlMM0GlgIyz3OlJeL3qCwmAw/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1lPwvrYDdVlMM0GlgIyz3OlJeL3qCwmAw&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 09</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="event"><a href="https://drive.google.com/file/d/1DaJ6PBl69ph4fTaEzA1EXxyR22Qo_vll/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1DaJ6PBl69ph4fTaEzA1EXxyR22Qo_vll&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">SỰ KIỆN 10</div></a></section>
+
+            <!-- XÂY DỰNG (7 VIDEOS) -->
+            <section class="project-section md:col-span-3" data-cat="construction"><a href="https://drive.google.com/file/d/1pmOxUCxpvNmdG0YdAGjRqG9vbZ15Tkrq/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1pmOxUCxpvNmdG0YdAGjRqG9vbZ15Tkrq&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 01</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="construction"><a href="https://drive.google.com/file/d/1iYjkEVC00KOnnmgU-ZHJQtN8w9kKWYNm/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1iYjkEVC00KOnnmgU-ZHJQtN8w9kKWYNm&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 02</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="construction"><a href="https://drive.google.com/file/d/18xr7gJCBl18PltGAVSyS2jceOJRF3AVj/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=18xr7gJCBl18PltGAVSyS2jceOJRF3AVj&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 03</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="construction"><a href="https://drive.google.com/file/d/1v9zVy6UiQZyVzRpIqIuvzakAvIhEN5cb/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1v9zVy6UiQZyVzRpIqIuvzakAvIhEN5cb&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 04</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="construction"><a href="https://drive.google.com/file/d/12YJpwfmYneBb4PhpWrfTRHPSoq0LJR5i/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=12YJpwfmYneBb4PhpWrfTRHPSoq0LJR5i&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 05</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="construction"><a href="https://drive.google.com/file/d/1683QAwdxTsCZG_Dv1kLyfTLo42HwTxJQ/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1683QAwdxTsCZG_Dv1kLyfTLo42HwTxJQ&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 06</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="construction"><a href="https://www.youtube.com/watch?v=VTJ4ivnniFk" target="_blank" class="video-thumbnail-link landscape"><img src="https://img.youtube.com/vi/VTJ4ivnniFk/maxresdefault.jpg" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">XÂY DỰNG 07</div></a></section>
+
+            <!-- QUẢNG CÁO (10 VIDEOS) -->
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1fLV9HGaXxleyWlnRze_LbZbK6778N9_7/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1fLV9HGaXxleyWlnRze_LbZbK6778N9_7&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 01</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1LqNhrMre8_dcjcBzIgz7iF13vimwNFWh/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1LqNhrMre8_dcjcBzIgz7iF13vimwNFWh&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 02</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1gwW7ZUSjzRKBIGbn9NXv46J7s67246-u/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1gwW7ZUSjzRKBIGbn9NXv46J7s67246-u&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 03</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1oGQ2VKodZhGr0IFyGKrdToJmU71SwsEr/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1oGQ2VKodZhGr0IFyGKrdToJmU71SwsEr&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 04</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1ZOc0gpO7_Hl3zCGtvVB7JdB7g96tEyYf/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1ZOc0gpO7_Hl3zCGtvVB7JdB7g96tEyYf&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 05</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/15uDMKw29JPaHJwq1qKdfiaI4vKMvzuWl/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=15uDMKw29JPaHJwq1qKdfiaI4vKMvzuWl&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 06</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1h_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1h_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 07</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1H-Z1_-K_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1H-Z1_-K_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 08</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1K_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1K_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 09</div></a></section>
+            <section class="project-section" data-cat="ads"><a href="https://drive.google.com/file/d/1L_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1L_E_0M_-I6m_pA5F6K6p_WJ7L7X_-I1k&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">QUẢNG CÁO 10</div></a></section>
+
+            <!-- PHIM TVC (3 VIDEOS) -->
+            <section class="project-section md:col-span-3" data-cat="tvc"><a href="https://drive.google.com/file/d/1fuuesV4h6eqDrWxES-Xq8qsD2KJPyJ7y/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1fuuesV4h6eqDrWxES-Xq8qsD2KJPyJ7y&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">PHIM TVC 01</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="tvc"><a href="https://drive.google.com/file/d/18xr7gJCBl18PltGAVSyS2jceOJRF3AVj/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=18xr7gJCBl18PltGAVSyS2jceOJRF3AVj&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">PHIM TVC 02</div></a></section>
+            <section class="project-section md:col-span-3" data-cat="tvc"><a href="https://drive.google.com/file/d/1SZmyt136LFd6OQ-jsg4Dxk2mbpHG7rCU/view" target="_blank" class="video-thumbnail-link landscape"><img src="https://drive.google.com/thumbnail?id=1SZmyt136LFd6OQ-jsg4Dxk2mbpHG7rCU&sz=w1000" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">PHIM TVC 03</div></a></section>
+
+            <!-- BRANDING (3 VIDEOS) -->
+            <section class="project-section" data-cat="branding"><a href="https://drive.google.com/file/d/1gN4JeByht8PeDHBTd9gFzpfhpQ1z437D/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1gN4JeByht8PeDHBTd9gFzpfhpQ1z437D&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BRANDING 01</div></a></section>
+            <section class="project-section" data-cat="branding"><a href="https://drive.google.com/file/d/12bbYUb52MwWSmVrJUdD_tJnR3eiNaa2o/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=12bbYUb52MwWSmVrJUdD_tJnR3eiNaa2o&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BRANDING 02</div></a></section>
+            <section class="project-section" data-cat="branding"><a href="https://drive.google.com/file/d/1aOtDiRhqN77sSrO8lQeR--ZjWi5CgWYa/view" target="_blank" class="video-thumbnail-link"><img src="https://drive.google.com/thumbnail?id=1aOtDiRhqN77sSrO8lQeR--ZjWi5CgWYa&sz=w400" class="w-full h-full object-cover" loading="lazy"><div class="play-button-overlay"><i data-lucide="play" fill="currentColor"></i></div><div class="watch-label">BRANDING 03</div></a></section>
+        </main>
+
+        <footer class="py-20 text-center border-t border-white/5 bg-[#050505] px-6">
+            <div class="max-w-4xl mx-auto">
+                <p class="text-[9px] md:text-[14px] tracking-[0.2em] md:tracking-[0.3em] uppercase text-white/80 font-black mb-10 italic">UPMEDIA ADVERTISING COMMUNICATIONS AND EVENTS</p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
+                    <div class="flex items-center gap-3">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEj-D4rZ8p00hKhHLhU8enbCObs48Qwel8-9wnSCEItAGp4Cs33h4e60zf8iyJDtKq7OH89sSzhNL0RokCvL5p7zcZ3NzUiXmaCkd8AgQQZHxGCc85w53jDz-iLLpNxqyKzeE_NQCGygN5ekVEwsY1m7xRnG_hk2aM4q9FvyThMEpsdPp-h0dXu13hXkmBqJ" class="w-5 h-5 rounded-md object-cover" alt="Zalo">
+                        <p class="text-[10px] md:text-[12px] text-gray-500 font-bold uppercase tracking-widest">0888 484 050</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEju-wOhYHsRHoo3v-uKcT2ESxm9zSVcMMccqqX2sSAWTCtNxbVGBSU6pulm2uLi60qhyS3Of8G0Ey_WG97UTwoYr4n-WBWMp0L3UyxpCSa-obNK11nYuECq-BXWNFn7t9MaBV_YwicFEB3sJIjMR7l-7PTiQ1zS1AlB_eNs0gUsWMZtkuoFxfDyTutwtUNf" class="w-5 h-5 rounded-md object-cover" alt="Facebook">
+                        <p class="text-[10px] md:text-[12px] text-gray-500 font-bold uppercase tracking-widest">upmediahcm</p>
+                    </div>
+                </div>
+                <p class="text-[6px] md:text-[8px] text-gray-800 uppercase tracking-[1em]">&copy; 2024 - UP MEDIA PRODUCTION</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const portfolioCategories = [
+            { id: 'realestate', label: 'Bất động sản', tag: 'Dự án & Không gian', img: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&w=600&q=60' },
+            { id: 'spa', label: 'Spa Beauty', tag: 'Làm đẹp & Clinic', img: 'https://images.unsplash.com/photo-1544161515-4af6b1d462c2?auto=format&w=600&q=60' },
+            { id: 'event', label: 'Sự kiện', tag: 'Gala & Hội nghị', img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&w=600&q=60' },
+            { id: 'construction', label: 'Xây dựng', tag: 'Công trình & Nhà máy', img: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&w=600&q=60' },
+            { id: 'tvc', label: 'Phim TVC', tag: 'Quảng cáo Cinema', img: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&w=600&q=60' },
+            { id: 'oneshot', label: 'Tổng hợp', tag: 'Viral ngắn', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&w=600&q=60' },
+            { id: 'ads', label: 'Quảng cáo', tag: 'Social Media Ads', img: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&w=600&q=60' },
+            { id: 'branding', label: 'Branding', tag: 'Visual Identity', img: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&w=600&q=60' }
+        ];
+
+        const menuData = [
+            { id: 'all', label: 'Trang chủ' },
+            { id: 'product_parent', label: 'Sản phẩm', children: portfolioCategories.map(c => ({ id: c.id, label: c.label })) },
+            { id: 'about', label: 'Giới thiệu' },
+            { id: 'contact', label: 'Liên hệ' }
+        ];
+
+        function createMenuItem(item, isMobile) {
+            const group = document.createElement('div');
+            group.className = 'nav-group';
+            const mainBtn = document.createElement('button');
+            mainBtn.className = `data-node ${item.id === 'all' ? 'active' : ''}`;
+            mainBtn.textContent = item.label;
+            group.appendChild(mainBtn);
+
+            if (item.children) {
+                const subWrapper = document.createElement('div');
+                subWrapper.className = 'sub-node-wrapper';
+                item.children.forEach(sub => {
+                    const subBtn = document.createElement('button');
+                    subBtn.className = 'data-node sub-node';
+                    subBtn.textContent = sub.label;
+                    subBtn.onclick = (e) => { e.stopPropagation(); filterData(sub.id, subBtn); };
+                    subWrapper.appendChild(subBtn);
+                });
+                group.appendChild(subWrapper);
+                
+                if (isMobile) {
+                    mainBtn.onclick = () => {
+                        group.classList.toggle('is-open');
+                        filterData('product_parent', mainBtn);
+                    };
+                } else {
+                    mainBtn.onclick = () => filterData('product_parent', mainBtn);
+                }
+            } else {
+                mainBtn.onclick = () => filterData(item.id, mainBtn);
+            }
+            return group;
+        }
+
+        function initMenus() {
+            const desktopNav = document.getElementById('desktop-nav');
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            if (!desktopNav || !mobileSidebar) return;
+            desktopNav.innerHTML = '';
+            mobileSidebar.innerHTML = '';
+            menuData.forEach((item) => {
+                desktopNav.appendChild(createMenuItem(item, false));
+                mobileSidebar.appendChild(createMenuItem(item, true));
+            });
+
+            const hubGrid = document.getElementById('hub-grid');
+            if (hubGrid) {
+                hubGrid.innerHTML = '';
+                portfolioCategories.forEach(cat => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-neutral-900 border border-white/5 rounded-3xl overflow-hidden cursor-pointer hover:border-white/20 transition-all';
+                    card.innerHTML = `<img src="${cat.img}" class="w-full h-48 object-cover filter brightness-50" loading="lazy"><div class="p-6"><h4 class="font-bold text-sm uppercase tracking-widest">${cat.label}</h4><p class="text-[10px] text-gray-500 uppercase mt-2">${cat.tag}</p></div>`;
+                    card.onclick = () => filterData(cat.id, null);
+                    hubGrid.appendChild(card);
+                });
+            }
+        }
+
+        function filterData(cat, clickedBtn) {
+            if (clickedBtn) {
+                document.querySelectorAll('.data-node').forEach(n => {
+                    n.classList.remove('active');
+                    if(n.textContent === clickedBtn.textContent) n.classList.add('active');
+                });
+            }
+            const sections = ['home-section', 'about-section', 'contact-section', 'product-hub-section', 'portfolio-main'];
+            sections.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) el.classList.add('hidden');
+            });
+            if (cat === 'all') {
+                document.getElementById('home-section').classList.remove('hidden');
+            } else if (cat === 'about') {
+                document.getElementById('about-section').classList.remove('hidden');
+            } else if (cat === 'contact') {
+                document.getElementById('contact-section').classList.remove('hidden');
+            } else if (cat === 'product_parent') {
+                document.getElementById('product-hub-section').classList.remove('hidden');
+            } else {
+                const portfolio = document.getElementById('portfolio-main');
+                if (portfolio) {
+                    portfolio.classList.remove('hidden');
+                    document.querySelectorAll('.project-section').forEach(p => {
+                        if (p.getAttribute('data-cat') === cat) p.classList.remove('hidden-node');
+                        else p.classList.add('hidden-node');
+                    });
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function initSlider() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length > 0) {
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 5000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMenus();
+            initSlider();
+            lucide.createIcons();
+            filterData('all', null);
+        });
+    </script>
+</body>
+</html>
